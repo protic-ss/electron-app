@@ -3,11 +3,13 @@ import Settings from './components/Settings'
 
 function App() {
   const [fileData, setFileData] = useState()
+  const [reciveData, setreciveData] = useState()
 
   // const counter = document.getElementById('counter')
 
   window.electronAPI.onUpdateCounter((value) => {
     console.log(value)
+    setreciveData(value)
     // const oldValue = Number(counter.innerText)
     // const newValue = oldValue + value
     // counter.innerText = newValue.toString()
@@ -36,7 +38,7 @@ function App() {
 
   return (
     <>
-      Current value: <strong id="counter">0</strong>
+      Current value: <strong id="counter">{reciveData}</strong>
       {!fileData?.clickThrough?.isAllow ? '' : <Settings></Settings>}
     </>
   )
