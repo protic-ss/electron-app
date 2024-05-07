@@ -6,7 +6,7 @@ function App() {
   const [reciveData, setreciveData] = useState()
 
   window.electronAPI.onUpdateCounter((value) => {
-    console.log(value)
+    // console.log(value)
     setreciveData(value.text)
     setFileData(value)
     window.electron.ipcRenderer.removeAllListeners('update-counter')

@@ -1,5 +1,5 @@
 {
-  "name": "wakfu-chat-translater",
+  "name": "translater",
   "version": "1.0.0",
   "description": "An Electron application with React",
   "main": "./out/main/index.js",

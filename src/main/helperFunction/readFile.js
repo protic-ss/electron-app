@@ -23,12 +23,8 @@ async function readLastLine(filePath) {
 
 export function readFile(fileData, handleTranslatedText) {
   if (fileData.path) {
-    console.log('hellloew', fileData)
-
     const WATCH_TARGET = fileData.path
-    fs.watch(WATCH_TARGET, (eventType, filename) => {
-      console.log('File "' + filename + '" was changed: ' + eventType)
-
+    fs.watch(WATCH_TARGET, () => {
       // var file = WATCH_TARGET
       // var linesCount = 0
       // var rl = readline.createInterface({
@@ -47,13 +43,12 @@ export function readFile(fileData, handleTranslatedText) {
         .then((lastLine) => {
           if (lastLine) {
             let splittext
-            console.log('Last line:', lastLine)
+
             if (lastLine.includes('=')) {
               splittext = lastLine.split('=')
-              console.log(splittext)
+
               translatte(splittext[1], { to: splittext[0] })
                 .then((res) => {
-                  console.log(res.text)
                   handleTranslatedText(res.text)
                 })
                 .catch((err) => {
