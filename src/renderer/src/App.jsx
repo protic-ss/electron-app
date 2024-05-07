@@ -7,15 +7,27 @@ function App() {
 
   window.electronAPI.onUpdateCounter((value) => {
     console.log(value)
-    setreciveData(value.icounter)
+    setreciveData(value.text)
     setFileData(value)
     window.electron.ipcRenderer.removeAllListeners('update-counter')
   })
 
   return (
     <>
-      Current value: {reciveData}
-      {fileData?.clickThrough?.isAllow ? '' : <Settings></Settings>}
+      {fileData?.clickThrough?.isAllow ? (
+        <div
+          style={{
+            padding: '20px',
+            color: 'white',
+            fontWeight: 'bold',
+            backgroundColor: '#32363fbf'
+          }}
+        >
+          <h2>{reciveData}</h2>
+        </div>
+      ) : (
+        <Settings></Settings>
+      )}
     </>
   )
 }

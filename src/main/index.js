@@ -6,7 +6,6 @@ import { readFile } from './helperFunction/readFile.js'
 
 const clickThrough = { isAllow: false }
 const file = { path: '', clickThrough }
-let icounter = 0
 
 async function handleFileOpen() {
   const { canceled, filePaths } = await dialog.showOpenDialog()
@@ -15,9 +14,6 @@ async function handleFileOpen() {
     return filePaths[0]
   }
 }
-// async function handleIsFilePath() {
-//   return file
-// }
 
 function createWindow() {
   // Create the browser window.
@@ -39,15 +35,10 @@ function createWindow() {
   })
 
   const sendData = () => mainWindow.webContents.send('update-counter', file)
-  readFile(file)
-  setInterval(() => {
-    icounter++
-    // readFile(file)
-    file.icounter = icounter
+  function handleTranslatedText(tText) {
+    file.text = tText
     sendData()
-    console.log(icounter)
-  }, 2500)
-
+  }
   ipcMain.on('set-ignore-mouse-events', (event, ignore, options) => {
     if (clickThrough.isAllow) {
       mainWindow.setIgnoreMouseEvents(ignore, options)
@@ -68,7 +59,7 @@ function createWindow() {
 
   ipcMain.on('setShow', () => {
     clickThrough.isAllow = !clickThrough.isAllow
-    readFile(file)
+    readFile(file, handleTranslatedText)
     sendData()
   })
   ipcMain.on('minimize-window', () => {
