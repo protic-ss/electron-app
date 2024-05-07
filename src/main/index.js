@@ -2,7 +2,7 @@ import { app, shell, BrowserWindow, ipcMain, dialog } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
-// const { dialog } = require('electron')
+import { readFile } from './helperFunction/readFile.js'
 
 const clickThrough = { isAllow: false }
 const file = { path: '', clickThrough }
@@ -15,9 +15,9 @@ async function handleFileOpen() {
     return filePaths[0]
   }
 }
-async function handleIsFilePath() {
-  return file
-}
+// async function handleIsFilePath() {
+//   return file
+// }
 
 function createWindow() {
   // Create the browser window.
@@ -38,33 +38,22 @@ function createWindow() {
     }
   })
 
+  const sendData = () => mainWindow.webContents.send('update-counter', file)
+  readFile(file)
   setInterval(() => {
     icounter++
-    mainWindow.webContents.send('update-counter', icounter)
+    // readFile(file)
+    file.icounter = icounter
+    sendData()
+    console.log(icounter)
   }, 2500)
-  // mainWindow.webContents.send('update-counter', 1)
-
-  // const menu = Menu.buildFromTemplate([
-  //   {
-  //     label: app.name,
-  //     submenu: [
-  //       {
-  //         click: () => mainWindow.webContents.send('update-counter', 1),
-  //         label: 'Increment'
-  //       },
-  //       {
-  //         click: () => mainWindow.webContents.send('update-counter', -1),
-  //         label: 'Decrement'
-  //       }
-  //     ]
-  //   }
-  // ])
-  // Menu.setApplicationMenu(menu)
 
   ipcMain.on('set-ignore-mouse-events', (event, ignore, options) => {
     if (clickThrough.isAllow) {
-      const win = BrowserWindow.fromWebContents(event.sender)
-      win.setIgnoreMouseEvents(ignore, options)
+      mainWindow.setIgnoreMouseEvents(ignore, options)
+      mainWindow.setAlwaysOnTop(clickThrough.isAllow)
+    } else {
+      mainWindow.setAlwaysOnTop(clickThrough.isAllow)
     }
   })
 
@@ -79,6 +68,8 @@ function createWindow() {
 
   ipcMain.on('setShow', () => {
     clickThrough.isAllow = !clickThrough.isAllow
+    readFile(file)
+    sendData()
   })
   ipcMain.on('minimize-window', () => {
     mainWindow.minimize()
@@ -118,7 +109,7 @@ app.whenReady().then(() => {
   // console.log(dialog.showOpenDialog({ properties: ['openFile', 'multiSelections'] }))
 
   ipcMain.handle('dialog:openFile', handleFileOpen)
-  ipcMain.handle('dialog:isFilePath', handleIsFilePath)
+  // ipcMain.handle('dialog:isFilePath', handleIsFilePath)
 
   createWindow()
 
