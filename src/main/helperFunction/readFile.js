@@ -46,7 +46,7 @@ export function readFile(fileData, handleTranslatedText) {
 
             if (lastLine.includes('=')) {
               splittext = lastLine.split('=')
-
+              console.log(splittext)
               translatte(splittext[1], { to: splittext[0] })
                 .then((res) => {
                   handleTranslatedText(res.text)
@@ -54,7 +54,9 @@ export function readFile(fileData, handleTranslatedText) {
                 .catch((err) => {
                   console.error(err)
                 })
-            } else handleTranslatedText(lastLine)
+            } else {
+              handleTranslatedText(lastLine)
+            }
           } else {
             console.log('File is empty or an error occurred.')
           }

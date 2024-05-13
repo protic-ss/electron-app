@@ -1,6 +1,7 @@
+/* eslint-disable react/prop-types */
 import { useState } from 'react'
 
-function Settings() {
+function Settings({ previousPath }) {
   const [language, setLanguage] = useState('en')
   const [name, setName] = useState('Enter the name here!')
   const [namelist, setNamelist] = useState([])
@@ -39,7 +40,7 @@ function Settings() {
         <button type="button" id="btn" onClick={handleFilePath}>
           Open a File
         </button>
-        File path: <strong id="filePath">{filePath}</strong>
+        File path: <strong id="filePath">{filePath ? filePath : previousPath}</strong>
       </div>
 
       <div style={{ margin: '25px', padding: '0px 5px', border: 'solid white 1px' }}>

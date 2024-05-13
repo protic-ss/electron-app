@@ -12,21 +12,13 @@ function App() {
     window.electron.ipcRenderer.removeAllListeners('update-counter')
   })
 
+  console.log(fileData)
   return (
     <>
       {fileData?.clickThrough?.isAllow ? (
-        <div
-          style={{
-            padding: '20px',
-            color: 'white',
-            fontWeight: 'bold',
-            backgroundColor: '#32363fbf'
-          }}
-        >
-          <h2>{reciveData}</h2>
-        </div>
+        <div className="tranlatedtext">{reciveData}</div>
       ) : (
-        <Settings></Settings>
+        <Settings previousPath={fileData?.path}></Settings>
       )}
     </>
   )

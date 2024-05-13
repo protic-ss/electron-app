@@ -176,6 +176,12 @@ code {
 .interactive {
   background-color: #087ea4;
 }
+.tranlatedtext {
+  padding: 20px;
+  color: white;
+  font-weight: bold;
+  /* background-color: #32363fbf; */
+}
 
 @media (max-width: 720px) {
   .text {
